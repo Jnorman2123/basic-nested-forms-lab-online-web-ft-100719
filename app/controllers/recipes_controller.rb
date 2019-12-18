@@ -9,8 +9,23 @@ class RecipesController < ApplicationController
 
   def new
     @recipe = Recipe.new
+    5.times { @recipe.ingredients.build }
   end
 
   def create
+    @recipe = Recipe.new(recipe_params)
+    @recipe.save
+    render :show
   end
+
+  def recipe_params 
+    params.require(:recipe).permit(
+      :title, 
+      ingredients_attributes: [
+        :id, 
+        :name, 
+        :quantity
+      ]
+    )
+  end 
 end
